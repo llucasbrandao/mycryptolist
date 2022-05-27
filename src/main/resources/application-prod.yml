@@ -1,0 +1,13 @@
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    
+externalServices:
+  coinPaprika:
+    url: localhost.com
+    
+jwt:
+  secret: 123456
+  expiry: 999999999999
