@@ -23,8 +23,12 @@ public class FavoriteCoinsModel {
 	
 	private String userNotes;
 	
+	@Indexed
 	private Boolean isStillFavorite;
 	
 	@Indexed
-	private LocalDate lastUpdated;
+	private LocalDate createdAt;
+	
+	@Indexed
+	private LocalDate updatedAt;
 }

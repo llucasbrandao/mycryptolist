@@ -13,7 +13,7 @@ import com.lucasbrandao.mycryptolist.models.FavoriteCoinsModel;
 @Repository
 public interface FavoriteCoinsRepository extends CrudRepository<FavoriteCoinsModel, UUID> {
 	
-	Optional<FavoriteCoinsModel> findByUserIdAndCoinId(UUID userId, String coinId);
+	Optional<FavoriteCoinsModel> findByUserIdAndCoinIdAndIsStillFavorite(UUID userId, String coinId, Boolean isStillFavorite);
 	
-	Page<FavoriteCoinsModel> findByUserId(UUID userId, Pageable pageable);
+	Page<FavoriteCoinsModel> findByUserIdAndIsStillFavorite(UUID userId, Boolean isStillFavorite, Pageable pageable);
 }

@@ -22,5 +22,7 @@ public class FavoriteCoinsDTO {
 	
 	private Boolean isStillFavorite;
 	
-	private LocalDate lastUpdated;
+	private LocalDate createdAt;
+	
+	private LocalDate updatedAt;
 }
