@@ -17,19 +17,12 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController()
 @RequestMapping("api/users")	
-public class GeneralController {
+public class UsersController {
 	
 	private final UsersServiceImpl usersServiceImpl;
 	
 	@PostMapping("/newUser")
 	public ResponseEntity<Void> newUser(@RequestBody UserDTO userDTO) {
-		usersServiceImpl.newUser(userDTO);
-		
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
-	}
-	
-	@PostMapping("/teste")
-	public ResponseEntity<Void> teste(@RequestBody UserDTO userDTO) {
 		usersServiceImpl.newUser(userDTO);
 		
 		return new ResponseEntity<Void>(HttpStatus.CREATED);

@@ -1,37 +1,29 @@
 package com.lucasbrandao.mycryptolist.models;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import lombok.Data;
 
-@RedisHash("Coins")
+@RedisHash("FavoriteCoins")
 @Data
-public class CoinModel {
+public class FavoriteCoinsModel {
 	
 	@Indexed
-	private String id;
+	private UUID id;
 	
 	@Indexed
-	private String name;
-	 
-	@Indexed
-	private String symbol;
+	private UUID userId;
 	
 	@Indexed
-	private Integer rank;
-	 
-	private Boolean isNew;
+	private String coinId;
 	
-	@Indexed
-	private Boolean isActive;
+	private String userNotes;
 	
-	@Indexed
-	private String type;
-	
-	private String description;
+	private Boolean isStillFavorite;
 	
 	@Indexed
 	private LocalDate lastUpdated;

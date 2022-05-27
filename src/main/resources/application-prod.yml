@@ -6,7 +6,7 @@ spring:
     
 externalServices:
   coinPaprika:
-    url: localhost.com
+    apiUrl: https://api.coinpaprika.com/v1/
     
 jwt:
   secret: 123456

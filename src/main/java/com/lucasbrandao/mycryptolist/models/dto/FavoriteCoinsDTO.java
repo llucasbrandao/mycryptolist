@@ -1,6 +1,7 @@
 package com.lucasbrandao.mycryptolist.models.dto;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -9,23 +10,17 @@ import lombok.Data;
 
 @JsonInclude(Include.NON_EMPTY)
 @Data
-public class CoinDTO {
+public class FavoriteCoinsDTO {
 	
-	private String id;
-
-	private String name;
-
-	private String symbol;
-
-	private Integer rank;
-	 
-	private Boolean isNew;
-
-	private Boolean isActive;
-
-	private String type;
+	private UUID id;
 	
-	private String description;
-
+	private UUID userId;
+	
+	private String coinId;
+	
+	private String userNotes;
+	
+	private Boolean isStillFavorite;
+	
 	private LocalDate lastUpdated;
 }

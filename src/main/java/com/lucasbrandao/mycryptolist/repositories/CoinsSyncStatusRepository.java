@@ -5,10 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.lucasbrandao.mycryptolist.models.CoinModel;
+import com.lucasbrandao.mycryptolist.models.CoinSyncStatusModel;
 
 @Repository
-public interface CoinsRepository extends CrudRepository<CoinModel, String> {
+public interface CoinsSyncStatusRepository extends CrudRepository<CoinSyncStatusModel, String> {
 	
-	Page<CoinModel> findAll(Pageable pageable);
+	Page<CoinSyncStatusModel> findAll(Pageable pageable);
 }
