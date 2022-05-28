@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lucasbrandao.mycryptolist.exceptions.DBException;
+import com.lucasbrandao.mycryptolist.exceptions.GenericException;
 import com.lucasbrandao.mycryptolist.exceptions.NotFoundException;
 import com.lucasbrandao.mycryptolist.mappers.FavoriteCoinsMapper;
 import com.lucasbrandao.mycryptolist.models.FavoriteCoinsModel;
@@ -20,9 +21,11 @@ import com.lucasbrandao.mycryptolist.utils.PageableUtils;
 import com.lucasbrandao.mycryptolist.utils.UserUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FavoriteCoinsServiceImpl implements FavoriteCoinsServiceInterface {
 	
 	private final CoinsServiceImpl coinsServiceImpl;
@@ -34,12 +37,12 @@ public class FavoriteCoinsServiceImpl implements FavoriteCoinsServiceInterface {
 	public void markFavoriteCoin(FavoriteCoinsDTO favoriteCoinDTO) {
 		if (favoriteCoinDTO != null && favoriteCoinDTO.getCoinId() != null) {
 			favoriteCoinsRepository.findByUserIdAndCoinIdAndIsStillFavorite(UserUtils.getLoggedUser().getID(), 
-					favoriteCoinDTO.getCoinId(), true).ifPresentOrElse(coin -> {
+					favoriteCoinDTO.getCoinId(), false).ifPresentOrElse(coin -> {
 						if (!coin.getIsStillFavorite()) {
 							coin.setUpdatedAt(LocalDate.now());
 							coin.setIsStillFavorite(true);
 							
-							favoriteCoinsRepository.save(coin);
+							this.saveCoin(coin);
 						}
 						
 					}, () -> {
@@ -48,10 +51,18 @@ public class FavoriteCoinsServiceImpl implements FavoriteCoinsServiceInterface {
 							favoriteCoinDTO.setUserId(UserUtils.getLoggedUser().getID());
 							favoriteCoinDTO.setCoinId(coinsServiceImpl.getCoinDetails(favoriteCoinDTO.getCoinId().toString()).getId());
 							favoriteCoinDTO.setCreatedAt(LocalDate.now());
+							favoriteCoinDTO.setIsStillFavorite(true);
 							
-							favoriteCoinsRepository.save(favoriteCoinsMapper.toModel(favoriteCoinDTO));
+							this.saveCoin(favoriteCoinsMapper.toModel(favoriteCoinDTO));
+							
+						} catch (NotFoundException e) {
+							log.error(e.getLocalizedMessage());
+							
+							throw new GenericException(e.getLocalizedMessage(), HttpStatus.NOT_FOUND);
 							
 						} catch (Exception e) {
+							log.error(e.getLocalizedMessage());
+							
 							throw new DBException("Ocorreu um erro ao salvar os dados.", HttpStatus.INTERNAL_SERVER_ERROR);
 						}
 					});
@@ -71,12 +82,7 @@ public class FavoriteCoinsServiceImpl implements FavoriteCoinsServiceInterface {
 				coin.setIsStillFavorite(false);
 				coin.setUpdatedAt(LocalDate.now());
 				
-				try {
-					favoriteCoinsRepository.save(coin);
-					
-				} catch (Exception e) {
-					throw new DBException("Ocorreu um erro ao salvar os dados.", HttpStatus.INTERNAL_SERVER_ERROR);
-				}
+				this.saveCoin(coin);
 				
 			}, () -> {
 				throw new NotFoundException("Nenhuma moeda com o ID " + favoriteCoinDTO.getCoinId() + " foi encontrada nos favoritos do usuário.");
@@ -105,11 +111,22 @@ public class FavoriteCoinsServiceImpl implements FavoriteCoinsServiceInterface {
 					coin.setUserNotes(favoriteCoinsDTO.getUserNotes());
 					coin.setUpdatedAt(LocalDate.now());
 					
-					favoriteCoinsRepository.save(coin);
-				
+					this.saveCoin(coin);
+						
 			}, () -> {
 				throw new NotFoundException("Nenhuma moeda foi encontrada nos favoritos do usuário.");
 			});
+		}
+	}
+	
+	private void saveCoin(FavoriteCoinsModel coin) {
+		try {
+			favoriteCoinsRepository.save(coin);
+			
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage());
+			
+			throw new DBException("Ocorreu um erro ao salvar os dados.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

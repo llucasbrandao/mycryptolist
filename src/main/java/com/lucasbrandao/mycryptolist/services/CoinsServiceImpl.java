@@ -88,7 +88,18 @@ public class CoinsServiceImpl implements CoinsServiceInterface {
 			}
 			
 		}, () -> {
-			throw new NotFoundException("Nenhuma moeda foi encontrada com o ID " + coinId + ".");
+			coinPaprikaFeignClient.getCoinDetails(coinId).ifPresentOrElse(coin -> {
+				if (coin == null) {
+					throw new NotFoundException("Nenhuma moeda foi encontrada com o ID " + coinId + ".");
+				}
+				
+				this.addCoinToCache(coin);
+				
+				dto.value = coin;
+				
+			}, () -> {
+				throw new NotFoundException("Nenhuma moeda foi encontrada com o ID " + coinId + ".");
+			});
 		});
 		
 		return dto.value;
@@ -111,6 +122,18 @@ public class CoinsServiceImpl implements CoinsServiceInterface {
 				coinsSyncStatusRepository.save(coinSyncStatusModel);
 			}
 		}
+	}
+	
+	private void addCoinToCache(CoinDTO coin) {
+		if (coin != null) {
+			coin.setLastUpdated(LocalDate.now());
+				
+			coinsRepository.save(coinMapper.toModel(coin));
+			
+			return;
+		}
+		
+		throw new IllegalArgumentException("Dados inválidos.");
 	}
 	
 	private CoinModel updateCoinDescription(CoinModel coin) {
