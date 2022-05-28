@@ -12,4 +12,6 @@ public interface FavoriteCoinsServiceInterface {
 	public void unmarkFavoriteCoin(FavoriteCoinsDTO favoriteCoinDTO);
 	
 	public PageDTO<FavoriteCoinsDTO> getFavoriteCoins(Pageable pageable);
+	
+	public void updateFavoriteCoin(FavoriteCoinsDTO favoriteCoinsDTO);
 }

@@ -95,4 +95,21 @@ public class FavoriteCoinsServiceImpl implements FavoriteCoinsServiceInterface {
 		return PageableUtils.generatePageDTO(favoriteCoinsMapper.toDTOList(page.getContent()), page.getTotalElements(), 
 				page.getTotalPages(), page.getNumberOfElements(), page.getNumber());
 	}
+	
+	@Override
+	public void updateFavoriteCoin(FavoriteCoinsDTO favoriteCoinsDTO) {
+		if (favoriteCoinsDTO != null && favoriteCoinsDTO.getCoinId() != null) {
+			favoriteCoinsRepository.findByUserIdAndCoinId(UserUtils.getLoggedUser().getID(), 
+					favoriteCoinsDTO.getCoinId()).ifPresentOrElse(coin -> {
+						
+					coin.setUserNotes(favoriteCoinsDTO.getUserNotes());
+					coin.setUpdatedAt(LocalDate.now());
+					
+					favoriteCoinsRepository.save(coin);
+				
+			}, () -> {
+				throw new NotFoundException("Nenhuma moeda foi encontrada nos favoritos do usuário.");
+			});
+		}
+	}
 }

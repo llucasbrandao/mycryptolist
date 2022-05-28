@@ -15,5 +15,7 @@ public interface FavoriteCoinsRepository extends CrudRepository<FavoriteCoinsMod
 	
 	Optional<FavoriteCoinsModel> findByUserIdAndCoinIdAndIsStillFavorite(UUID userId, String coinId, Boolean isStillFavorite);
 	
+	Optional<FavoriteCoinsModel> findByUserIdAndCoinId(UUID userId, String coinId);
+	
 	Page<FavoriteCoinsModel> findByUserIdAndIsStillFavorite(UUID userId, Boolean isStillFavorite, Pageable pageable);
 }

@@ -6,25 +6,35 @@ services:
       #context: ../ # Use an image built from the specified dockerfile in the `polling-app-server` directory.
       #dockerfile: ../
     # If docker-compose build fails, try specifying the image below and remove the dockerfile: /
-    image: llucasbrandao/mycryptolistapi:v0.0.1
+    image: llucasbrandao/mycryptolistapi:v0.0.3
     container_name: mycryptolistapi
+    env_file: 
+      - ../env/configs.env
+    volumes:
+    - ./redis.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+      - 8080:8080 # Forward the exposed port 8080 on the container to port 8080 on the host machine
     restart: always
     depends_on: 
-      - redis # This service depends on cache. Start that first.
+      - redisdb # This service depends on cache. Start that first.
     networks:
       - backend
   
-  redis:
-    container_name: redis-db
+  redisdb:
+    container_name: redisdb
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass 123456
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning
     volumes: 
-      - ../../dockervolumes/redis:/data
+      - ./db/redis:/data
+    networks:
+      - backend
+
 volumes:
   redis:
-    driver: local
+
+networks: 
+  backend:
+    driver: bridge
