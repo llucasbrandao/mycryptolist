@@ -6,7 +6,7 @@ services:
       #context: ../ # Use an image built from the specified dockerfile in the `polling-app-server` directory.
       #dockerfile: ../
     # If docker-compose build fails, try specifying the image below and remove the dockerfile: /
-    image: llucasbrandao/mycryptolistapi:v0.0.6
+    image: llucasbrandao/mycryptolistapi:v0.0.7
     container_name: mycryptolistapi
     env_file: 
       - ../env/configs.env

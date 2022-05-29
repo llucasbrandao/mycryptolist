@@ -2,7 +2,7 @@
 
 My Crypto List API é uma simples API implementada com Spring Boot 2.7.0 e o banco NoSQL Redis.
 
-Sua função é buscar informações de criptomoedas no serviço [Coin Paprika](coinpaprica.com).
+Sua função é buscar informações de criptomoedas no serviço [Coin Paprika](https://coinpaprica.com).
 
 <br>
 
@@ -28,7 +28,7 @@ __Remova o argumento "-d" do comando acima, se quiser ver os logs do console.__
 
 ### Sem docker-compose
 
-É só configurar as variáveis de ambiente no arquivo [configs.env](./env/configs.env). Após, você pode usar a imagem mais recente do repositório [llucasbrandao/mycryptolistapi](https://hub.docker.com/r/llucasbrandao/mycryptolistapi/tags) e executá-la com o docker padrão.
+É só configurar as variáveis de ambiente no arquivo [configs.env](./env/configs.env). Após, você pode usar a imagem mais recente do repositório [llucasbrandao/mycryptolistapi](https://hub.docker.com/r/llucasbrandao/mycryptolistapi/tags) e executá-la com o Docker padrão.
 <br>
 
 _Lembre-se de que é necessário especificar um banco de dados Redis._
