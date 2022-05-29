@@ -3,6 +3,8 @@ package com.lucasbrandao.mycryptolist.models.dto;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -16,6 +18,7 @@ public class FavoriteCoinsDTO {
 	
 	private UUID userId;
 	
+	@NotNull
 	private String coinId;
 	
 	private String userNotes;
