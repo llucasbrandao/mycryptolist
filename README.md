@@ -2,7 +2,7 @@
 
 My Crypto List API é uma simples API implementada com Spring Boot 2.7.0 e o banco NoSQL Redis.
 
-Sua função é buscar informações de criptomoedas no serviço [Coin Paprika](https://coinpaprica.com).
+Sua função é buscar informações de criptomoedas no serviço [Coin Paprika](https://coinpaprika.com).
 
 <br>
 
