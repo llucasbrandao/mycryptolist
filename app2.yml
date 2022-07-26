@@ -1,0 +1,68 @@
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mycrypto
+  # namespace: whoami5
+  labels:
+    allow.http: "false"
+    application: mycrypto
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      application: mycrypto
+  template:
+    metadata:
+      labels:
+        application: mycrypto
+    spec:
+      containers:
+      - name: mycrypto
+        image: llucasbrandao/mycryptolistapi
+        ports:
+        - containerPort: 8080
+        securityContext:
+          privileged: true
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mycrypto
+  # namespace: whoami5
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80 # Porta a ser exposta pelo SERVICE
+    targetPort: 8080 # Porta que a aplicação está rodando no POD
+  selector:
+    application: mycrypto
+
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: mycrypto
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+spec:
+  rules:
+    - host: mycrypto.shafitycore.cyou
+      http:
+        paths:
+          - path : /
+            pathType: Prefix
+            backend:
+              service:
+                name: mycrypto
+                port:
+                  number: 80
+
+
+
