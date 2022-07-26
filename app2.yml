@@ -44,7 +44,6 @@ metadata:
 type: Opaque
 data:
   JWT_SECRET: MTIzNDU2        //username -> encoded base64
-  REDIS_PASSWORD:         //password -> encoded base64
   COIN_PAPRIKA_API_URL: aHR0cHM6Ly9hcGkuY29pbnBhcHJpa2EuY29tL3YxLw==
 
 ---
