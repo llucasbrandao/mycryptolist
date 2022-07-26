@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: mycrypto
-        image: llucasbrandao/mycryptolistapi
+        image: llucasbrandao/mycryptolistapi:v0.0.7
         ports:
         - containerPort: 8080
         securityContext:
