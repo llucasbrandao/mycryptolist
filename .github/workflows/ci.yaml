@@ -1,16 +1,15 @@
 name: 'Container CI'
 
 on:
-  
   push:
     branches:
-      - main
+      - master
     paths:
-      - app1/**
+      - /**
   
   pull_request: # [master, next]
     paths:
-      - app1/**
+      - /**
 
 jobs:
 
@@ -21,7 +20,7 @@ jobs:
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
-        working-directory: app1
+        working-directory: /
         shell: bash
 
     steps:
@@ -54,7 +53,7 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        context: ./app1/container
+        context: ./
         file: ./app1/container/Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/app1:${{ steps.buildnumber.outputs.build_number }}
