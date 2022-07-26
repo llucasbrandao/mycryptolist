@@ -30,7 +30,7 @@ spec:
               secretKeyRef:
                 name: credentials
                 key: JWT_SECRET
-          - name: COIN_PAPRIKA_API_URL_SECRET
+          - name: COIN_PAPRIKA_API_URL
             valueFrom:
               secretKeyRef:
                 name: credentials
