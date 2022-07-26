@@ -35,6 +35,11 @@ spec:
               secretKeyRef:
                 name: credentials
                 key: COIN_PAPRIKA_API_URL
+          - name: REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: REDIS_PORT
 
 ---
 apiVersion: v1
@@ -45,6 +50,7 @@ type: Opaque
 data:
   JWT_SECRET: MTIzNDU2
   COIN_PAPRIKA_API_URL: aHR0cHM6Ly9hcGkuY29pbnBhcHJpa2EuY29tL3YxLw==
+  REDIS_PORT: 6379
 
 ---
 apiVersion: v1
