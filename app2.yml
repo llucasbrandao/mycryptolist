@@ -25,11 +25,16 @@ spec:
         securityContext:
           privileged: true
         env:
-          - name: JET_SECRET
+          - name: JWT_SECRET
             valueFrom:
               secretKeyRef:
                 name: credentials
                 key: JWT_SECRET
+          - name: JWT_EXPIRY
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: JWT_EXPIRY
           - name: COIN_PAPRIKA_API_URL
             valueFrom:
               secretKeyRef:
@@ -49,6 +54,7 @@ metadata:
 type: Opaque
 data:
   JWT_SECRET: MTIzNDU2
+  JWT_EXPIRY: OTk5OTk5OTk5
   COIN_PAPRIKA_API_URL: aHR0cHM6Ly9hcGkuY29pbnBhcHJpa2EuY29tL3YxLw==
   REDIS_PORT: NjM3OQ==
 
