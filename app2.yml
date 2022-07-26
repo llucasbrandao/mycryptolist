@@ -43,7 +43,7 @@ metadata:
   name: credentials
 type: Opaque
 data:
-  JWT_SECRET: MTIzNDU2        //username -> encoded base64
+  JWT_SECRET: MTIzNDU2
   COIN_PAPRIKA_API_URL: aHR0cHM6Ly9hcGkuY29pbnBhcHJpa2EuY29tL3YxLw==
 
 ---
