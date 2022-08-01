@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - master
-    paths:
-      - /**
   
   pull_request: # [master, next]
     paths:
-      - /**
+      - /
 
 jobs:
 
