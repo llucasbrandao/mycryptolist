@@ -50,7 +50,6 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        file: ${{ github.workspace }}/docker/Dockerfile
+        file: /Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/app1:${{ steps.buildnumber.outputs.build_number }}
-        run: echo "${{ github.workspace }}"
