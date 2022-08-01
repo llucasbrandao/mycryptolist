@@ -39,21 +39,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Set up Docker Buildx
-      if: github.event_name == 'push'
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Build and push
-      if: github.event_name == 'push'
-      id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-        file: /Dockerfile
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/mycryptolistapi:latest #${{ steps.buildnumber.outputs.build_number }}
-    
+        
     # Typical Java workflow steps
     - uses: actions/checkout@v1
     - name: Set up JDK 17
@@ -70,3 +56,18 @@ jobs:
     # Step that runs the tests
     #- name: Run tests
       #run: mvn test
+
+
+    - name: Set up Docker Buildx
+      if: github.event_name == 'push'
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push
+      if: github.event_name == 'push'
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        file: /Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/mycryptolistapi:latest #${{ steps.buildnumber.outputs.build_number }}
