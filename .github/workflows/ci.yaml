@@ -52,4 +52,4 @@ jobs:
       with:
         file: /Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/app1:${{ steps.buildnumber.outputs.build_number }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/mycryptolistapi:latest #${{ steps.buildnumber.outputs.build_number }}
