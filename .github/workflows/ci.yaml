@@ -10,9 +10,8 @@ on:
       - /
 
 jobs:
-
   container:
-    name: 'Container'
+    name: 'Build Container'
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -52,6 +51,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./
-        file: ./app1/container/Dockerfile
+        file: ./docker/Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/app1:${{ steps.buildnumber.outputs.build_number }}
