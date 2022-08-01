@@ -53,3 +53,4 @@ jobs:
         file: ${{ github.workspace }}/docker/Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/app1:${{ steps.buildnumber.outputs.build_number }}
+        run: echo "${{ github.workspace }}"
