@@ -22,30 +22,12 @@ jobs:
       # git pull
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
-            
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - mycryptolistapi-{{ checksum "pom.xml" }}
-
-      - run: mvn dependency:go-offline
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: mycryptolistapi-{{ checksum "pom.xml" }}
-        
-      # package into a jar
-      - run: mvn clean package -Dmaven.test.skip=true
-
-      # build and push docker image to docker hub
-      - run: mvn clean compile -Dmaven.test.skip=true com.google.cloud.tools:jib-maven-plugin:build -Dimage=$IMAGE_NAME:$CIRCLE_BUILD_NUM
-
-      # store raw contents of src code
-      - store_artifacts:
-          path: target/classes
-          destination: mycryptolistapi
+          docker_layer_caching: true    
+      - run: 
+          name: Publish Docker Image to Docker Hub
+          command: |
+            docker build -t $IMAGE_NAME .
+            docker push $IMAGE_NAME:$CIRCLE_BUILD_NUM
 
   cluster-deploy:
     description: Cluster Deploy
