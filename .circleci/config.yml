@@ -60,16 +60,11 @@ jobs:
           action-type: apply
 
 workflows:
-  version: 2.1
+  version: 2
   cluster-deployment-workflow:
     jobs:
       - build
       - cluster-deploy:
-        requires: [build]
-
-
-
-
-
-
-
+          type: approval
+          requires:
+            - build
