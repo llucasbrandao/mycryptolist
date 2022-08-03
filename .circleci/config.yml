@@ -56,6 +56,8 @@ jobs:
           show-kubectl-command: true 
           get-rollout-status: true 
           resource-file-path: .kubectl/deployment 
+          server-side-apply: true
+          action-type: apply
 workflows:
   cluster-deployment-workflow:
     jobs:
