@@ -53,7 +53,9 @@ workflows:
   cluster-deployment-workflow:
     jobs:
       - build
-      - cluster-deploy:
+      - deployment-approval:
+          name: Waiting approval
           type: approval
+      - cluster-deploy:
           requires:
-            - build
+            - Waiting approval
