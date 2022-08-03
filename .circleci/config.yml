@@ -8,7 +8,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:16.0.1-jdk-buster
+      - image: cimg/openjdk:18.0
 
     working_directory: ~/mycryptolistapi
     
@@ -32,7 +32,7 @@ jobs:
       - run: mvn clean package -Dmaven.test.skip=true
 
       # build and push docker image to docker hub
-      - run: mvn clean compile -Dmaven.test.skip=true jib:build -Dimage=zarinlo/springboot-api:$CIRCLE_BUILD_NUM
+      - run: mvn clean compile -Dmaven.test.skip=true com.google.cloud.tools:jib-maven-plugin:build -Dimage=shafitycore/mycryptoapi:$CIRCLE_BUILD_NUM
 
       # store raw contents of src code
       - store_artifacts:
