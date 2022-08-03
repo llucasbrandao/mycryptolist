@@ -14,7 +14,7 @@ jobs:
       - image: cimg/openjdk:18.0
         auth:
           username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+          password: $DOCKERHUB_TOKEN
 
     working_directory: ~/mycryptolistapi
     
