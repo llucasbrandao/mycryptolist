@@ -58,7 +58,18 @@ jobs:
           resource-file-path: .kubectl/deployment 
           server-side-apply: true
           action-type: apply
+
 workflows:
+  version: 2.1
   cluster-deployment-workflow:
     jobs:
-      - cluster-deploy
+      - build
+      - cluster-deploy:
+        requires: [build]
+
+
+
+
+
+
+
