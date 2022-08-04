@@ -13,6 +13,7 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_TOKEN
+    resource_class: medium
 
     working_directory: ~/mycryptolistapi
     
@@ -33,6 +34,7 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+    resource_class: medium
       
     working_directory: ~/mycryptolistapi
     
@@ -58,6 +60,7 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+    resource_class: medium
       
     working_directory: ~/mycryptolistapi
     
