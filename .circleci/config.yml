@@ -13,6 +13,7 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_TOKEN
+    resource_class: medium
 
     working_directory: ~/mycryptolistapi
     
@@ -33,6 +34,7 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+    resource_class: medium
       
     working_directory: ~/mycryptolistapi
     
@@ -43,8 +45,8 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: $KUBECONFIG_DATA 
-      
+        kubeconfig: KUBECONFIG_DATA
+        
       - kubernetes/create-or-update-resource:
           resource-name: deployment/mycrypto 
           show-kubectl-command: true 
@@ -58,6 +60,7 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+    resource_class: medium
       
     working_directory: ~/mycryptolistapi
     
@@ -68,7 +71,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: $KUBECONFIG_DATA 
+        kubeconfig: KUBECONFIG_DATA
       
       - kubernetes/create-or-update-resource:
           resource-name: deployment/mycrypto 
@@ -80,15 +83,15 @@ jobs:
 
 workflows:
   version: 2
-  staging-deployment-workflow:
+  deployment-workflow:
     jobs:
       - build:
-          name: Build
+          name: Build & Publish Docker Image
       - deployment-approval:
           name: Waiting approval
           type: approval
           requires:
-            - Build
+            - Build & Publish Docker Image
       - staging-cluster-deploy:
           name: Deploy to Staging Cluster
           filters:

@@ -3,7 +3,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: mycrypto
-  # namespace: whoami5
+  namespace: default
   labels:
     allow.http: "false"
     application: mycrypto
@@ -63,7 +63,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mycrypto
-  # namespace: whoami5
+  namespace: default
 spec:
   type: ClusterIP
   ports:
