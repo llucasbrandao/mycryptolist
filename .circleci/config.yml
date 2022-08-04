@@ -43,7 +43,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: $KUBECONFIG_DATA 
+        kubeconfig: $KUBE_CONFIG_STAGING_DATA 
       
       - kubernetes/create-or-update-resource:
           resource-name: deployment/mycrypto 
@@ -68,7 +68,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: $KUBECONFIG_DATA 
+        kubeconfig: $KUBE_CONFIG_STAGING_DATA 
       
       - kubernetes/create-or-update-resource:
           resource-name: deployment/mycrypto 
