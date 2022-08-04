@@ -33,6 +33,8 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+      
+    working_directory: ~/mycryptolistapi
     
     steps:
       - run: ls
