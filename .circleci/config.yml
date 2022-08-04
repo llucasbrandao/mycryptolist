@@ -35,7 +35,7 @@ jobs:
       - image: cimg/base:stable
     
     steps:
-      -run: ls
+      - run: ls
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
