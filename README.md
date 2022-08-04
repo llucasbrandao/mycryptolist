@@ -1,4 +1,5 @@
 # My Crypto List API
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/llucasbrandao/mycryptolist/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/llucasbrandao/mycryptolist/tree/master)
 
 My Crypto List API é uma simples API implementada com Spring Boot 2.7.0 e o banco NoSQL Redis.
 
