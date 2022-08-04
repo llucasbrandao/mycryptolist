@@ -35,6 +35,7 @@ jobs:
       - image: cimg/base:stable
     
     steps:
+      -run: ls
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
@@ -45,7 +46,7 @@ jobs:
           resource-name: deployment/mycrypto 
           show-kubectl-command: true 
           get-rollout-status: true 
-          resource-file-path: .circleci/deployment.yaml 
+          resource-file-path: /.circleci/deployment.yaml 
           server-side-apply: true
           action-type: apply
 
