@@ -37,6 +37,7 @@ jobs:
     working_directory: ~/mycryptolistapi
     
     steps:
+      - checkout
       - run: ls
       - kubernetes/install-kubectl:
         kubectl-version: latest 
@@ -65,5 +66,6 @@ workflows:
           #  - Build
       - cluster-deploy:
           name: Deploy
-         # requires:
+          requires:
+            - Build
           #  - Waiting approval
