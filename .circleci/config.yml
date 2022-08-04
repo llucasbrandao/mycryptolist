@@ -58,12 +58,12 @@ workflows:
     jobs:
       - build:
           name: Build
-      - deployment-approval:
-          name: Waiting approval
-          type: approval
-          requires:
-            - Build
+      #- deployment-approval:
+       #   name: Waiting approval
+        #  type: approval
+         # requires:
+          #  - Build
       - cluster-deploy:
           name: Deploy
-          requires:
-            - Waiting approval
+         # requires:
+          #  - Waiting approval
