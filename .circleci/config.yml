@@ -45,7 +45,7 @@ jobs:
           resource-name: deployment/mycrypto 
           show-kubectl-command: true 
           get-rollout-status: true 
-          resource-file-path: .kubectl/deployment 
+          resource-file-path: .circleci/deployment 
           server-side-apply: true
           action-type: apply
 
