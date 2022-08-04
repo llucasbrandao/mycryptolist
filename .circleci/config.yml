@@ -33,9 +33,8 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+    
     steps:
-      - run: apk add ca-certificates
-      
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
