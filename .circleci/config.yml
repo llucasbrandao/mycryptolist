@@ -83,7 +83,7 @@ jobs:
 
 workflows:
   version: 2
-  deployment-workflow:
+  mycryptolist-deployment-workflow:
     jobs:
       - build:
           name: Build & Publish Docker Image
