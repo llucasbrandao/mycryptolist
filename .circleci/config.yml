@@ -1,0 +1,109 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+orbs:
+  kubernetes: circleci/kubernetes@1.3.1
+  docker: circleci/docker@2.1.2
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:18.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_TOKEN
+
+    working_directory: ~/mycryptolistapi
+    
+    steps:
+      # git pull
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
+      - run: 
+          name: Publish Docker Image to Docker Hub
+          command: |
+            docker build -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
+
+  staging-cluster-deploy:
+    description: Staging Cluster Deploy
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+      
+    working_directory: ~/mycryptolistapi
+    
+    steps:
+      - checkout
+
+      - kubernetes/install-kubectl:
+        kubectl-version: latest 
+
+      - kubernetes/install-kubeconfig:
+        kubeconfig: $KUBECONFIG_DATA 
+      
+      - kubernetes/create-or-update-resource:
+          resource-name: deployment/mycrypto 
+          show-kubectl-command: true 
+          get-rollout-status: true 
+          resource-file-path: .circleci/deployment.yaml 
+          server-side-apply: true
+          action-type: apply
+
+  production-cluster-deploy:
+    description: Production Cluster Deploy
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+      
+    working_directory: ~/mycryptolistapi
+    
+    steps:
+      - checkout
+      
+      - kubernetes/install-kubectl:
+        kubectl-version: latest 
+
+      - kubernetes/install-kubeconfig:
+        kubeconfig: $KUBECONFIG_DATA 
+      
+      - kubernetes/create-or-update-resource:
+          resource-name: deployment/mycrypto 
+          show-kubectl-command: true 
+          get-rollout-status: true 
+          resource-file-path: .circleci/deployment.yaml 
+          server-side-apply: true
+          action-type: apply
+
+workflows:
+  version: 2
+  staging-deployment-workflow:
+    jobs:
+      - build:
+          name: Build
+      - deployment-approval:
+          name: Waiting approval
+          type: approval
+          requires:
+            - Build
+      - staging-cluster-deploy:
+          name: Deploy to Staging Cluster
+          filters:
+            branches:
+              ignore:
+                - master
+                - main
+          requires:
+            - Waiting approval
+      - production-cluster-deploy:
+          name: Deploy to Production Cluster
+          filters:
+            branches:
+              only:
+                - master
+                - main
+          requires:
+            - Waiting approval
