@@ -28,8 +28,8 @@ jobs:
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
 
-  cluster-deploy:
-    description: Cluster Deploy
+  staging-cluster-deploy:
+    description: Staging Cluster Deploy
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
@@ -38,6 +38,32 @@ jobs:
     
     steps:
       - checkout
+
+      - kubernetes/install-kubectl:
+        kubectl-version: latest 
+
+      - kubernetes/install-kubeconfig:
+        kubeconfig: $KUBECONFIG_DATA 
+      
+      - kubernetes/create-or-update-resource:
+          resource-name: deployment/mycrypto 
+          show-kubectl-command: true 
+          get-rollout-status: true 
+          resource-file-path: .circleci/deployment.yaml 
+          server-side-apply: true
+          action-type: apply
+
+  production-cluster-deploy:
+    description: Production Cluster Deploy
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+      
+    working_directory: ~/mycryptolistapi
+    
+    steps:
+      - checkout
+      
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
@@ -63,11 +89,21 @@ workflows:
           type: approval
           requires:
             - Build
-      - cluster-deploy:
+      - staging-cluster-deploy:
+          name: Deploy to Staging Cluster
+          filters:
+            branches:
+              ignore:
+                - master
+                - main
+          requires:
+            - Waiting approval
+      - production-cluster-deploy:
+          name: Deploy to Production Cluster
           filters:
             branches:
               only:
                 - master
-          name: Deploy
+                - main
           requires:
             - Waiting approval
