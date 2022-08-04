@@ -80,15 +80,15 @@ jobs:
 
 workflows:
   version: 2
-  staging-deployment-workflow:
+  deployment-workflow:
     jobs:
       - build:
-          name: Build
+          name: Build & Publish Docker Image
       - deployment-approval:
           name: Waiting approval
           type: approval
           requires:
-            - Build
+            - Build & Publish Docker Image
       - staging-cluster-deploy:
           name: Deploy to Staging Cluster
           filters:
