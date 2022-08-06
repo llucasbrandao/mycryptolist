@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: mycrypto
-        image: llucasbrandao/mycryptolistapi:$BUILD_NUM
+        image: llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
         ports:
         - containerPort: 8080
         securityContext:
