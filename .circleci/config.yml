@@ -33,21 +33,21 @@ jobs:
           condition:
             equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: echo "llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}" >> ${parameters.IMAGE_TAG}
+            - run: echo "llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}" >> << parameters.IMAGE_TAG >>
       - when:
           condition:
             not: 
               equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: echo "llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}" >> ${parameters.IMAGE_TAG}
+            - run: echo "llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}" >> << parameters.IMAGE_TAG >>
       - run: echo ${parameters.IMAGE_TAG}
 
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
-            docker build -t ${parameters.IMAGE_TAG} .
+            docker build -t << parameters.IMAGE_TAG >> .
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push ${parameters.IMAGE_TAG}
+            docker push << parameters.IMAGE_TAG >>
 
   staging-cluster-deploy:
     description: Staging Cluster Deploy
