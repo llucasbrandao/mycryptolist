@@ -10,7 +10,7 @@ jobs:
   build:
     parameters:
       IMAGE_TAG:
-        type: env_var_name
+        type: string
         default: CIRCLE_BUILD_NUM
         
     docker:
