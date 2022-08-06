@@ -15,7 +15,7 @@ jobs:
           password: $DOCKERHUB_TOKEN
     resource_class: medium
     environment:
-      CIRCLE_BUILD_NUM: $CIRCLE_BUILD_NUM
+      BUILD_NUM: $CIRCLE_BUILD_NUM
 
     working_directory: ~/mycryptolistapi
     
