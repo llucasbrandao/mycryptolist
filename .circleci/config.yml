@@ -35,14 +35,12 @@ jobs:
       # replace with your preferred image
       - image: cimg/base:stable
     resource_class: medium
-
-    environment:
-      CIRCLE_BUILD_NUM: expr $CIRCLE_BUILD_NUM - 1 
       
     working_directory: ~/mycryptolistapi
     
     steps:
       - checkout
+      - run: echo "export CIRCLE_BUILD_NUM=$(expr ${CIRCLE_BUILD_NUM} - 1)" >> $BASH_ENV
       - run: echo ${CIRCLE_BUILD_NUM}
       - kubernetes/install-kubectl:
         kubectl-version: latest 
