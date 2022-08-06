@@ -27,9 +27,9 @@ jobs:
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
-            docker build --build-arg BUILD_NUM=${CIRCLE_BUILD_NUM} -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
+            docker build -t llucasbrandao/mycryptolistapi:${CIRCLE_BUILD_NUM} .
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin | $CIRCLE_BUILD_NUM
-            docker push llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
+            docker push llucasbrandao/mycryptolistapi:${CIRCLE_BUILD_NUM}
 
   staging-cluster-deploy:
     description: Staging Cluster Deploy
@@ -39,10 +39,12 @@ jobs:
     resource_class: medium
       
     working_directory: ~/mycryptolistapi
+    environment:
+      BUILD_NUM: ${CIRCLE_BUILD_NUM}
     
     steps:
       - checkout
-
+      - run: echo ${CIRCLE_BUILD_NUM}
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
@@ -56,6 +58,7 @@ jobs:
           resource-file-path: .circleci/deployment.yaml 
           server-side-apply: true
           action-type: apply
+          envsubst: true
 
   production-cluster-deploy:
     description: Production Cluster Deploy
