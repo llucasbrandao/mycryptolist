@@ -7,12 +7,7 @@ orbs:
   docker: circleci/docker@2.1.2
 
 jobs:
-  build:
-    parameters:
-      IMAGE_TAG:
-        type: string
-        default: ""
-        
+  build:    
     docker:
       - image: cimg/openjdk:18.0
         auth:
@@ -26,28 +21,30 @@ jobs:
       # git pull
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true    
-          
-      - run: echo ${<< parameters.IMAGE_TAG >>}
+          docker_layer_caching: true        
+      
       - when:
           condition:
             equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM} >> ${<< parameters.IMAGE_TAG >>}
+            - run: 
+                name: Publish Docker Image to Docker Hub
+                command: |
+                  docker build -t llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM} .
+                  echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+                  docker push llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}
+
       - when:
           condition:
             not: 
               equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM} >> ${<< parameters.IMAGE_TAG >>}
-      - run: echo ${<< parameters.IMAGE_TAG >>}
-
-      - run: 
-          name: Publish Docker Image to Docker Hub
-          command: |
-            docker build -t ${<< parameters.IMAGE_TAG >>} .
-            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push ${<< parameters.IMAGE_TAG >>}
+            - run: 
+                name: Publish Docker Image to Docker Hub
+                command: |
+                  docker build -t llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM} .
+                  echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+                  docker push llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}
 
   staging-cluster-deploy:
     description: Staging Cluster Deploy
