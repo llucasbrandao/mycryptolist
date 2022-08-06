@@ -11,7 +11,7 @@ jobs:
     parameters:
       IMAGE_TAG:
         type: string
-        default: CIRCLE_BUILD_NUM
+        default: ""
         
     docker:
       - image: cimg/openjdk:18.0
@@ -33,13 +33,13 @@ jobs:
           condition:
             equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: echo "llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}" >> ${<< parameters.IMAGE_TAG >>}
+            - run: llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM} >> ${<< parameters.IMAGE_TAG >>}
       - when:
           condition:
             not: 
               equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: echo "llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}" >> ${<< parameters.IMAGE_TAG >>}
+            - run: llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM} >> ${<< parameters.IMAGE_TAG >>}
       - run: echo ${<< parameters.IMAGE_TAG >>}
 
       - run: 
