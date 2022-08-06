@@ -81,6 +81,7 @@ jobs:
           resource-file-path: .circleci/deployment.yaml 
           server-side-apply: true
           action-type: apply
+          envsubst: true
 
 workflows:
   version: 2
