@@ -27,8 +27,8 @@ jobs:
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
-            docker build -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
-            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker build -build-arg BUILD_NUM=${CIRCLE_BUILD_NUM} -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin | $CIRCLE_BUILD_NUM
             docker push llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
 
   staging-cluster-deploy:
