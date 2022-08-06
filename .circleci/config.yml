@@ -28,7 +28,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true    
           
-      - run: echo ${parameters.IMAGE_TAG}
+      - run: echo << parameters.IMAGE_TAG >>
       - when:
           condition:
             equal: [ main, master, << pipeline.git.branch >> ]
