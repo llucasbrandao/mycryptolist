@@ -25,6 +25,7 @@ jobs:
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
+            export DOCKER_BUILDKIT=1
             docker build -t llucasbrandao/mycryptolistapi:${CIRCLE_BUILD_NUM} .
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push llucasbrandao/mycryptolistapi:${CIRCLE_BUILD_NUM}
