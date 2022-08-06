@@ -22,29 +22,12 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true        
-      
-      - when:
-          condition:
-            equal: [ main, master, << pipeline.git.branch >> ]
-          steps:
-            - run: 
-                name: Publish Docker Image to Docker Hub
-                command: |
-                  docker build -t llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM} .
-                  echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-                  docker push llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}
-
-      - when:
-          condition:
-            not: 
-              equal: [ main, master, << pipeline.git.branch >> ]
-          steps:
-            - run: 
-                name: Publish Docker Image to Docker Hub
-                command: |
-                  docker build -t llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM} .
-                  echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-                  docker push llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}
+      - run: 
+          name: Publish Docker Image to Docker Hub
+          command: |
+            docker build -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
 
   staging-cluster-deploy:
     description: Staging Cluster Deploy
