@@ -33,13 +33,13 @@ jobs:
           condition:
             equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: echo "export IMAGE_TAG=llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}" >> ${<< parameters.IMAGE_TAG >>}
+            - run: echo "llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM}" >> ${<< parameters.IMAGE_TAG >>}
       - when:
           condition:
             not: 
               equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: echo "export IMAGE_TAG=llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}" >> ${<< parameters.IMAGE_TAG >>}
+            - run: echo "llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM}" >> ${<< parameters.IMAGE_TAG >>}
       - run: echo ${<< parameters.IMAGE_TAG >>}
 
       - run: 
