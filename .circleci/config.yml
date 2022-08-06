@@ -30,19 +30,19 @@ jobs:
           condition:
             equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: llucasbrandao/mycryptolistapi:production:$CIRCLE_BUILD_NUM >> ${IMAGE_TAG}
+            - run: llucasbrandao/mycryptolistapi:production:${CIRCLE_BUILD_NUM} >> ${IMAGE_TAG}
       - when:
           condition:
             not: 
               equal: [ main, master, << pipeline.git.branch >> ]
           steps:
-            - run: llucasbrandao/mycryptolistapi:staging:$CIRCLE_BUILD_NUM >> ${IMAGE_TAG}
+            - run: llucasbrandao/mycryptolistapi:staging:${CIRCLE_BUILD_NUM} >> ${IMAGE_TAG}
       - run: echo ${IMAGE_TAG}
 
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
-            docker build -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
+            docker build -t ${IMAGE_TAG} .
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push ${IMAGE_TAG}
 
