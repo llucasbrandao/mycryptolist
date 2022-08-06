@@ -38,7 +38,7 @@ jobs:
       
     working_directory: ~/mycryptolistapi
     environment:
-      BUILD_NUM: ${CIRCLE_BUILD_NUM}
+      BUILD_NUM: CIRCLE_BUILD_NUM
     
     steps:
       - checkout
