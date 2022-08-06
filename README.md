@@ -97,4 +97,4 @@ O login deve ser feito enviando-se o username e password para o endpoint de logi
 Se os dados forem válidos, um bearer token será devolvido no header da response. É com ele que você deverá se autenticar nos outros endpoints.
 
 ## CI
-Processo de CI integrado ao projeto, para deploy com Github Actions, Rancher e Fleet.
+Processo de CI integrado ao projeto, para deploy com Github, CircleCI and Kubernetes.

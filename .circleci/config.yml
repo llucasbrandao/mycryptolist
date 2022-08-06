@@ -7,7 +7,7 @@ orbs:
   docker: circleci/docker@2.1.2
 
 jobs:
-  build:
+  build:    
     docker:
       - image: cimg/openjdk:18.0
         auth:
@@ -16,18 +16,18 @@ jobs:
     resource_class: medium
 
     working_directory: ~/mycryptolistapi
-    
+
     steps:
       # git pull
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true    
+          docker_layer_caching: true        
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
-            docker build -t llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM .
+            docker build -t llucasbrandao/mycryptolistapi:${CIRCLE_BUILD_NUM} .
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push llucasbrandao/mycryptolistapi:$CIRCLE_BUILD_NUM
+            docker push llucasbrandao/mycryptolistapi:${CIRCLE_BUILD_NUM}
 
   staging-cluster-deploy:
     description: Staging Cluster Deploy
@@ -40,7 +40,7 @@ jobs:
     
     steps:
       - checkout
-
+      - run: echo "export BUILD_NUM=$(expr ${CIRCLE_BUILD_NUM} - 1)" >> $BASH_ENV
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
@@ -54,6 +54,7 @@ jobs:
           resource-file-path: .circleci/deployment.yaml 
           server-side-apply: true
           action-type: apply
+          envsubst: true
 
   production-cluster-deploy:
     description: Production Cluster Deploy
@@ -66,7 +67,7 @@ jobs:
     
     steps:
       - checkout
-      
+      - run: echo "export BUILD_NUM=$(expr ${CIRCLE_BUILD_NUM} - 1)" >> $BASH_ENV
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
