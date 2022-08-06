@@ -16,10 +16,13 @@ jobs:
     resource_class: medium
 
     working_directory: ~/mycryptolistapi
-    
+    environment:
+      BUILD_NUM: CIRCLE_BUILD_NUM
+
     steps:
       # git pull
       - checkout
+      - run: echo ${BUILD_NUM}
       - setup_remote_docker:
           docker_layer_caching: true        
       - run: 
@@ -42,7 +45,7 @@ jobs:
     
     steps:
       - checkout
-      - run: echo ${CIRCLE_BUILD_NUM}
+      - run: echo ${BUILD_NUM}
       - kubernetes/install-kubectl:
         kubectl-version: latest 
 
