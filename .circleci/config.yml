@@ -97,13 +97,15 @@ workflows:
     jobs:
       - build:
           name: Build & Publish Docker Image
+          context:
+            - DOCKER_PERSONAL
+
       - deployment-approval:
           name: Waiting approval
           type: approval
-          context:
-            - DOCKER_PERSONAL
           requires:
             - Build & Publish Docker Image
+
       - staging-cluster-deploy:
           name: Deploy to Staging Cluster
           context:
@@ -115,6 +117,7 @@ workflows:
                 - main
           requires:
             - Waiting approval
+            
       - production-cluster-deploy:
           name: Deploy to Production Cluster
           context:
